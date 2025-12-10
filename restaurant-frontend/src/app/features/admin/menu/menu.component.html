@@ -1,0 +1,38 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Menu & Inventory</h1>
+    <p>Manage your restaurant's offerings</p>
+  </div>
+
+  <div class="tabs-container">
+    <div class="tabs-header">
+      <button 
+        class="tab-btn" 
+        [class.active]="activeTab() === 'menu-items'"
+        (click)="setTab('menu-items')"
+      >
+        Menu Items
+      </button>
+      <button 
+        class="tab-btn" 
+        [class.active]="activeTab() === 'categories'"
+        (click)="setTab('categories')"
+      >
+        Categories
+      </button>
+      <button 
+        class="tab-btn" 
+        [class.active]="activeTab() === 'inventory'"
+        (click)="setTab('inventory')"
+      >
+        Inventory
+      </button>
+    </div>
+
+    <div class="tab-content">
+      <app-menu-item-list *ngIf="activeTab() === 'menu-items'"></app-menu-item-list>
+      <app-category-list *ngIf="activeTab() === 'categories'"></app-category-list>
+      <app-inventory *ngIf="activeTab() === 'inventory'"></app-inventory>
+    </div>
+  </div>
+</div>

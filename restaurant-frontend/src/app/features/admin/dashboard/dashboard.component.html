@@ -1,0 +1,70 @@
+<div class="dashboard-container">
+  <div class="header">
+    <h1>Welcome back, {{ authService.currentUser()?.full_name }} 👋</h1>
+    <p>Here's what's happening in your restaurant today.</p>
+  </div>
+
+  <div class="kpi-grid">
+    <!-- Sales -->
+    <div class="kpi-card">
+      <div class="icon-wrapper green">
+        <lucide-icon [img]="DollarIcon" size="24"></lucide-icon>
+      </div>
+      <h3>Total Revenue</h3>
+      <p class="value">${{ totalSales | number:'1.2-2' }}</p>
+    </div>
+
+    <!-- Active Orders -->
+    <div class="kpi-card">
+      <div class="icon-wrapper blue">
+        <lucide-icon [img]="BagIcon" size="24"></lucide-icon>
+      </div>
+      <h3>Active Orders</h3>
+      <p class="value">{{ activeOrdersCount }}</p>
+    </div>
+
+    <!-- Low Stock -->
+    <div class="kpi-card">
+      <div class="icon-wrapper red">
+         <lucide-icon [img]="AlertIcon" size="24"></lucide-icon>
+      </div>
+      <h3>Low Stock Alerts</h3>
+      <p class="value">{{ lowStockItems.length }}</p>
+      <span class="trend" *ngIf="lowStockItems.length > 0">Action required</span>
+      <span class="trend" style="color: green" *ngIf="lowStockItems.length === 0">All good</span>
+    </div>
+  </div>
+
+  <div class="content-grid">
+    <!-- Recent Orders List -->
+    <div class="section-card">
+      <h3 class="card-title">Recent Orders</h3>
+      <div class="order-list">
+        <div class="order-row" *ngFor="let order of recentOrders">
+          <div class="info">
+            <span class="id">#{{ order.order_id }}</span>
+            <span class="table">Table {{ order.table?.table_number }}</span>
+            <span class="badge" [ngClass]="order.status">{{ order.status }}</span>
+          </div>
+          <span class="amount">${{ getOrderTotal(order) | number:'1.2-2' }}</span>
+        </div>
+        <div *ngIf="recentOrders.length === 0">No orders yet.</div>
+      </div>
+    </div>
+
+    <!-- Low Stock List -->
+    <div class="section-card">
+      <h3 class="card-title">Low Inventory</h3>
+      <div class="alert-list">
+         <div class="alert-item" *ngFor="let item of lowStockItems">
+            <lucide-icon [img]="AlertIcon" size="18"></lucide-icon>
+            <span class="item-name">{{ item.item_name }}</span>
+            <span class="stock-val">{{ item.quantity }} {{ item.unit }}</span>
+         </div>
+         <div *ngIf="lowStockItems.length === 0" style="color: #6b7280; text-align: center; padding: 1rem;">
+            Stock levels are healthy. ✅
+         </div>
+      </div>
+    </div>
+  </div>
+</div>

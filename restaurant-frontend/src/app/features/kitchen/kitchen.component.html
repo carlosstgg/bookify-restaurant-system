@@ -1,0 +1,52 @@
+<div class="kitchen-container">
+  <div class="header">
+    <h1>Kitchen Display System (KDS)</h1>
+    <div class="clock">{{ now | date:'mediumTime' }}</div>
+  </div>
+
+  <div class="tickets-grid">
+    <div 
+      class="ticket-card" 
+      *ngFor="let order of orders()"
+      [class.late]="getElapsedMinutes(order.order_time) > 20"
+      [class.in-progress]="order.status === 'in_progress'"
+    >
+      <div class="ticket-header">
+        <span class="table-num">T-{{ order.table?.table_number }}</span>
+        <div class="timer">
+          <lucide-icon [img]="ClockIcon" size="16"></lucide-icon>
+          <span>{{ getElapsedMinutes(order.order_time) }}m</span>
+        </div>
+      </div>
+
+      <div class="ticket-body">
+        <div class="item" *ngFor="let item of order.orderItems">
+          <span class="qty">{{ item.quantity }}</span>
+          <span class="name">{{ item.menuItem?.name }}</span>
+        </div>
+      </div>
+
+      <div class="ticket-footer">
+        <button 
+          *ngIf="order.status === 'pending'" 
+          class="btn-action start" 
+          (click)="startPreparing(order.order_id)"
+        >
+          START
+        </button>
+        <button 
+          *ngIf="order.status === 'in_progress'" 
+          class="btn-action done" 
+          (click)="markReady(order.order_id)"
+        >
+          READY
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="orders().length === 0" class="empty-kitchen">
+      <h2>All Clear, Chef! 👨‍🍳</h2>
+      <p>No pending orders at the moment.</p>
+    </div>
+  </div>
+</div>

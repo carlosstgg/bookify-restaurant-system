@@ -1,0 +1,63 @@
+<div class="orders-grid" *ngIf="!isLoading()">
+  <div class="order-card" *ngFor="let order of orders()" [ngClass]="order.status">
+    <div class="card-header">
+      <div class="meta">
+        <span class="table-badge">Table {{ order.table?.table_number || '?' }}</span>
+        <span class="time">{{ order.order_time | date:'shortTime' }}</span>
+      </div>
+      <span class="status-badge" [ngClass]="order.status">{{ order.status | titlecase }}</span>
+    </div>
+
+    <div class="card-body">
+      <div class="items-list">
+        <div class="item" *ngFor="let item of order.orderItems">
+          <span class="qty">{{ item.quantity }}x</span>
+          <span class="name">{{ item.menuItem?.name }}</span>
+        </div>
+      </div>
+      <div class="waiter">
+        <small>Waiter: {{ order.employee?.full_name }}</small>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <div class="total">
+        <span>Total:</span>
+        <span class="amount">${{ order.total }}</span>
+      </div>
+      
+      <div class="actions" *ngIf="order.status !== 'paid' && order.status !== 'cancelled'">
+        <button 
+          *ngIf="order.status === 'pending'" 
+          class="btn-action start" 
+          (click)="updateStatus(order.order_id, 'in_progress')"
+          title="Start Preparing"
+        >
+          Start
+        </button>
+        <button 
+          *ngIf="order.status === 'in_progress'" 
+          class="btn-action serve" 
+          (click)="updateStatus(order.order_id, 'served')"
+          title="Mark Served"
+        >
+          Serve
+        </button>
+         <button 
+          *ngIf="order.status === 'served'" 
+          class="btn-action pay" 
+          (click)="updateStatus(order.order_id, 'paid')"
+          title="Mark Paid"
+        >
+          Pay
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="orders().length === 0" class="empty-state">
+    <lucide-icon [img]="UtensilsIcon" size="48"></lucide-icon>
+    <h3>No Active Orders</h3>
+    <p>Orders taken from tables will appear here.</p>
+  </div>
+</div>

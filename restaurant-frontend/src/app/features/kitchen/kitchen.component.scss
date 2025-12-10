@@ -1,0 +1,148 @@
+$bg-dark: #1f2937;
+$ticket-bg: #ffffff;
+$text-dark: #111827;
+$alert: #ef4444;    // Red for late tickets
+$pending: #fbbf24;  // Amber for header
+$progress: #3b82f6; // Blue for in-progress
+$success: #10b981;  // Green
+
+.kitchen-container {
+  background-color: $bg-dark;
+  height: calc(100vh - 64px); // Fixed height
+  padding: 1.5rem;
+  color: white;
+  overflow: hidden; // Prevent body scroll
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-shrink: 0; // Don't shrink header
+
+  h1 { margin: 0; font-size: 2rem; }
+  .clock { font-size: 1.5rem; font-weight: 700; font-family: monospace; }
+}
+
+.tickets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  overflow-y: auto; // Scroll inside grid only
+  flex: 1; // Take remaining space
+  padding-bottom: 2rem; // Bottom padding for scroll
+  align-content: start; // Keep items at top
+}
+
+.ticket-card {
+  background-color: $ticket-bg;
+  color: $text-dark;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+  
+  // Status styling
+  border-top: 8px solid $pending; // Default pending
+
+  &.in-progress {
+    border-top-color: $progress;
+    background-color: #eff6ff;
+  }
+
+  &.late {
+    border-top-color: $alert;
+    animation: pulse 2s infinite;
+    
+    .timer { color: $alert; font-weight: 800; }
+  }
+
+  .ticket-header {
+    background-color: #f3f4f6;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #e5e7eb;
+
+    .table-num {
+      font-size: 1.5rem;
+      font-weight: 900;
+    }
+
+    .timer {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+  }
+
+  .ticket-body {
+    padding: 1rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    .item {
+      display: flex;
+      gap: 0.75rem;
+      font-size: 1.25rem; // Large text for readability
+      border-bottom: 1px dashed #e5e7eb;
+      padding-bottom: 0.5rem;
+
+      .qty { font-weight: 900; }
+      .name { font-weight: 600; }
+    }
+  }
+
+  .ticket-footer {
+    padding: 1rem;
+    background-color: #f9fafb;
+
+    .btn-action {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.25rem;
+      font-weight: 800;
+      border: none;
+      border-radius: 0.375rem;
+      cursor: pointer;
+      text-transform: uppercase;
+
+      &.start {
+        background-color: $bg-dark;
+        color: white;
+        &:hover { background-color: black; }
+      }
+
+      &.done {
+        background-color: $success;
+        color: white;
+        &:hover { background-color: darken($success, 5%); }
+      }
+    }
+  }
+}
+
+.empty-kitchen {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem;
+  opacity: 0.5;
+
+  h2 { font-size: 3rem; margin-bottom: 1rem; }
+  p { font-size: 1.5rem; }
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}

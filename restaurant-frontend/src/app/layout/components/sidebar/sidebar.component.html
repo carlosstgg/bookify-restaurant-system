@@ -1,0 +1,37 @@
+<aside class="sidebar">
+  <div class="logo-container">
+    <div class="logo-icon">B</div>
+    <span class="logo-text">Bookify</span>
+  </div>
+
+  <nav class="nav-menu">
+    <ng-container *ngFor="let item of menuItems">
+      <a 
+        *ngIf="hasAccess(item.roles)"
+        [routerLink]="item.route" 
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{exact: item.route === '/'}"
+        class="nav-item"
+      >
+        <lucide-icon [img]="item.icon" class="nav-icon"></lucide-icon>
+        <span class="nav-label">{{ item.label }}</span>
+      </a>
+    </ng-container>
+  </nav>
+
+  <div class="nav-footer">
+    <div class="user-info">
+      <div class="avatar">
+        {{ authService.currentUser()?.full_name?.charAt(0) }}
+      </div>
+      <div class="user-details">
+        <span class="user-name">{{ authService.currentUser()?.full_name }}</span>
+        <span class="user-role">{{ authService.currentUser()?.role }}</span>
+      </div>
+    </div>
+    
+    <button class="logout-btn" (click)="logout()" title="Logout">
+      <lucide-icon [img]="LogOutIcon" size="20"></lucide-icon>
+    </button>
+  </div>
+</aside>

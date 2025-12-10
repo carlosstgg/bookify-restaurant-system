@@ -1,0 +1,55 @@
+<div class="actions-bar">
+  <h3>Restaurant Floor</h3>
+  <button class="btn-primary" (click)="openCreate()" *ngIf="isManager()">
+    <lucide-icon [img]="PlusIcon" size="18"></lucide-icon>
+    <span>Add Table</span>
+  </button>
+</div>
+
+<div class="floor-grid" *ngIf="!isLoading()">
+  <div class="table-card" *ngFor="let table of tables()">
+    <div class="table-icon">
+      <lucide-icon [img]="ArmchairIcon" size="32"></lucide-icon>
+      <span class="capacity">{{ table.capacity }} seats</span>
+    </div>
+    <div class="table-info">
+      <h4>Table {{ table.table_number }}</h4>
+    </div>
+    <div class="table-actions" *ngIf="isManager()">
+      <button class="icon-btn" (click)="openEdit(table)">
+        <lucide-icon [img]="EditIcon" size="16"></lucide-icon>
+      </button>
+      <button class="icon-btn delete" (click)="deleteTable(table.table_id)">
+        <lucide-icon [img]="TrashIcon" size="16"></lucide-icon>
+      </button>
+    </div>
+  </div>
+  
+  <div *ngIf="tables().length === 0" class="empty-state">
+    <p>No tables configured. Add tables to start taking orders.</p>
+  </div>
+</div>
+
+<app-modal 
+  *ngIf="isModalOpen()" 
+  [title]="editingTable() ? 'Edit Table' : 'New Table'" 
+  (closed)="closeModal()"
+>
+  <form [formGroup]="form" (ngSubmit)="save()" class="table-form">
+    <div class="form-group">
+      <label>Table Number</label>
+      <input type="number" formControlName="table_number" min="1">
+    </div>
+    
+    <div class="form-group">
+      <label>Capacity (Seats)</label>
+      <input type="number" formControlName="capacity" min="1" max="20">
+      <small>Max 20 seats</small>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" class="btn-cancel" (click)="closeModal()">Cancel</button>
+      <button type="submit" class="btn-submit" [disabled]="form.invalid">Save</button>
+    </div>
+  </form>
+</app-modal>

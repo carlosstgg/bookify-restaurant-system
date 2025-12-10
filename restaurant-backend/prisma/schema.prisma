@@ -1,0 +1,144 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  category_id Int        @id @default(autoincrement())
+  name        String     @db.VarChar(80)
+  menuItems   MenuItem[]
+
+  @@index([name], map: "idx_category_name")
+  @@map("Categories")
+}
+
+model MenuItem {
+  item_id     Int         @id @default(autoincrement())
+  name        String      @db.VarChar(120)
+  description String?     @db.Text
+  price       Decimal     @db.Decimal(10, 2)
+  category_id Int
+  available   Boolean     @default(true)
+  category    Category    @relation(fields: [category_id], references: [category_id])
+  orderItems  OrderItem[]
+  recipes     Recipe[]
+
+  @@index([name], map: "idx_item_name")
+  @@index([category_id], map: "idx_category")
+  @@map("MenuItems")
+}
+
+model Table {
+  table_id     Int     @id @default(autoincrement())
+  table_number Int     @unique
+  capacity     Int
+  orders       Order[]
+
+  @@index([capacity], map: "idx_capacity")
+  @@map("Tables")
+}
+
+enum Role {
+  waiter
+  chef
+  cashier
+  manager
+}
+
+model Employee {
+  employee_id Int     @id @default(autoincrement())
+  full_name   String  @db.VarChar(120)
+  role        Role
+  email       String  @unique @db.VarChar(120)
+  password    String  @db.VarChar(255) // Hashed password
+  phone       String? @db.VarChar(20)
+  orders      Order[]
+
+  @@index([role], map: "idx_role")
+  @@map("Employees")
+}
+
+enum OrderStatus {
+  pending
+  in_progress
+  served
+  paid
+  cancelled
+}
+
+model Order {
+  order_id    Int         @id @default(autoincrement())
+  table_id    Int
+  employee_id Int
+  order_time  DateTime
+  status      OrderStatus @default(pending)
+  table       Table       @relation(fields: [table_id], references: [table_id])
+  employee    Employee    @relation(fields: [employee_id], references: [employee_id])
+  orderItems  OrderItem[]
+  payments    Payment[]
+
+  @@index([status], map: "idx_status")
+  @@index([order_time], map: "idx_order_time")
+  @@map("Orders")
+}
+
+model OrderItem {
+  order_item_id Int      @id @default(autoincrement())
+  order_id      Int
+  item_id       Int
+  quantity      Int      @default(1)
+  subtotal      Decimal  @db.Decimal(10, 2)
+  order         Order    @relation(fields: [order_id], references: [order_id])
+  menuItem      MenuItem @relation(fields: [item_id], references: [item_id])
+
+  @@index([order_id], map: "idx_order")
+  @@index([item_id], map: "idx_menu_item")
+  @@map("OrderItems")
+}
+
+model Inventory {
+  inventory_id Int    @id @default(autoincrement())
+  item_name    String @db.VarChar(120)
+  quantity     Int
+  unit         String @db.VarChar(20)
+  min_quantity Int?   @default(0)
+  recipes      Recipe[]
+
+  @@index([item_name], map: "idx_inventory_name")
+  @@map("Inventory")
+}
+
+model Recipe {
+  recipe_id    Int       @id @default(autoincrement())
+  menu_item_id Int
+  inventory_id Int
+  quantity_needed Int    // Amount of inventory item needed per menu item
+  menuItem     MenuItem  @relation(fields: [menu_item_id], references: [item_id])
+  inventory    Inventory @relation(fields: [inventory_id], references: [inventory_id])
+
+  @@map("Recipes")
+  @@index([menu_item_id], map: "idx_recipe_menu_item")
+  @@index([inventory_id], map: "idx_recipe_inventory")
+}
+
+enum PaymentMethod {
+  cash
+  card
+  transfer
+}
+
+model Payment {
+  payment_id   Int           @id @default(autoincrement())
+  order_id     Int
+  amount       Decimal       @db.Decimal(10, 2)
+  payment_date DateTime
+  method       PaymentMethod
+  order        Order         @relation(fields: [order_id], references: [order_id])
+
+  @@index([payment_date], map: "idx_payment_date")
+  @@map("Payments")
+}

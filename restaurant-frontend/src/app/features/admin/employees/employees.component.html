@@ -1,0 +1,88 @@
+<div class="page-container">
+  <div class="page-header">
+    <div>
+      <h1>Employees</h1>
+      <p class="subtitle">Manage staff access and roles</p>
+    </div>
+    <button class="btn-primary" (click)="openCreateModal()">
+      <lucide-icon [img]="PlusIcon" size="18"></lucide-icon>
+      <span>Add New Employee</span>
+    </button>
+  </div>
+
+  <div class="content-card">
+    <!-- Loading State -->
+    <div *ngIf="isLoading()" class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading employees...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="errorMessage()" class="error-state">
+      <p>{{ errorMessage() }}</p>
+      <button (click)="loadEmployees()">Try Again</button>
+    </div>
+
+    <!-- Table -->
+    <div *ngIf="!isLoading() && !errorMessage()" class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th class="actions-col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let employee of employees()">
+            <td>
+              <div class="employee-cell">
+                <div class="avatar">{{ employee.full_name.charAt(0) }}</div>
+                <div class="info">
+                  <span class="name">{{ employee.full_name }}</span>
+                  <span class="id">ID: #{{ employee.employee_id }}</span>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="badge" [ngClass]="employee.role">
+                {{ employee.role }}
+              </span>
+            </td>
+            <td>{{ employee.email }}</td>
+            <td>{{ employee.phone || '-' }}</td>
+            <td class="actions-cell">
+              <button class="action-btn edit" title="Edit" (click)="openEditModal(employee)">
+                <lucide-icon [img]="EditIcon" size="16"></lucide-icon>
+              </button>
+              <button class="action-btn delete" (click)="deleteEmployee(employee.employee_id)" title="Delete">
+                 <lucide-icon [img]="TrashIcon" size="16"></lucide-icon>
+              </button>
+            </td>
+          </tr>
+          
+          <tr *ngIf="employees().length === 0">
+            <td colspan="5" class="empty-state">
+              No employees found. Add your first team member!
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Modal and Form -->
+  <app-modal 
+    *ngIf="isModalOpen()" 
+    [title]="editingEmployee() ? 'Edit Employee' : 'Add New Employee'"
+    (closed)="closeModal()"
+  >
+    <app-employee-form
+      [employee]="editingEmployee()"
+      (saved)="onFormSaved()"
+      (cancelled)="closeModal()"
+    ></app-employee-form>
+  </app-modal>
+</div>

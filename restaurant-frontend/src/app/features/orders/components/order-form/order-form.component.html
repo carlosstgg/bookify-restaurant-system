@@ -1,0 +1,89 @@
+<div class="pos-container">
+  <!-- Left Side: Menu & Selection -->
+  <div class="menu-section">
+    <!-- 1. Table Selection -->
+    <div class="section-header">
+      <h3>1. Select Table</h3>
+      <div class="table-selector">
+        <select [value]="selectedTableId()" (change)="selectTable($any($event.target).value)">
+          <option [value]="null" disabled selected>Choose a Table...</option>
+          <option *ngFor="let table of tables()" [value]="table.table_id">
+            Table {{ table.table_number }} ({{ table.capacity }}p)
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <!-- 2. Category Tabs -->
+    <div class="categories-nav">
+      <button 
+        [class.active]="activeCategory() === 'all'" 
+        (click)="activeCategory.set('all')"
+      >All</button>
+      <button 
+        *ngFor="let cat of categories()" 
+        [class.active]="activeCategory() === cat.category_id"
+        (click)="activeCategory.set(cat.category_id)"
+      >{{ cat.name }}</button>
+    </div>
+
+    <!-- 3. Menu Grid -->
+    <div class="menu-grid">
+      <div class="menu-item-card" *ngFor="let item of filteredItems" (click)="addToCart(item)">
+        <div class="item-name">{{ item.name }}</div>
+        <div class="item-price">${{ item.price }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Side: Cart Summary -->
+  <div class="cart-section">
+    <div class="cart-header">
+      <lucide-icon [img]="CartIcon" size="20"></lucide-icon>
+      <h3>Current Order</h3>
+    </div>
+
+    <div class="cart-items">
+      <div class="cart-item" *ngFor="let item of cart()">
+        <div class="item-info">
+          <span class="name">{{ item.menuItem.name }}</span>
+          <span class="price">${{ item.menuItem.price }}</span>
+        </div>
+        <div class="item-controls">
+          <button class="qty-btn" (click)="updateQuantity(item.menuItem.item_id, -1)">
+            <lucide-icon [img]="MinusIcon" size="14"></lucide-icon>
+          </button>
+          <span class="qty">{{ item.quantity }}</span>
+          <button class="qty-btn" (click)="updateQuantity(item.menuItem.item_id, 1)">
+            <lucide-icon [img]="PlusIcon" size="14"></lucide-icon>
+          </button>
+          <button class="del-btn" (click)="removeFromCart(item.menuItem.item_id)">
+            <lucide-icon [img]="TrashIcon" size="16"></lucide-icon>
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="cart().length === 0" class="empty-cart">
+        Select items from the menu to add them to the order.
+      </div>
+    </div>
+
+    <div class="cart-footer">
+      <div class="total-row">
+        <span>Total</span>
+        <span class="amount">${{ total() | number:'1.2-2' }}</span>
+      </div>
+      
+      <div class="action-buttons">
+        <button class="btn-cancel" (click)="cancelled.emit()">Cancel</button>
+        <button 
+          class="btn-checkout" 
+          [disabled]="!selectedTableId() || cart().length === 0"
+          (click)="submitOrder()"
+        >
+          Send to Kitchen
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

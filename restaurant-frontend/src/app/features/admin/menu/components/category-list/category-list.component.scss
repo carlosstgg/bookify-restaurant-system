@@ -1,0 +1,125 @@
+$primary: #111827;
+$accent: #2563eb;
+$danger: #ef4444;
+$border: #e5e7eb;
+
+.actions-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+
+  h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: $primary;
+  }
+}
+
+.btn-primary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: $accent;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-weight: 500;
+  
+  &:hover {
+    background-color: darken($accent, 5%);
+  }
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  text-align: left;
+
+  th {
+    padding: 0.75rem 1rem;
+    background-color: #f9fafb;
+    border-bottom: 1px solid $border;
+    color: #6b7280;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+  }
+
+  td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid $border;
+    color: $primary;
+  }
+  
+  .id-col {
+    color: #9ca3af;
+    font-size: 0.85rem;
+  }
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  color: #6b7280;
+  
+  &:hover {
+    background-color: #f3f4f6;
+  }
+  
+  &.delete:hover {
+    color: $danger;
+  }
+}
+
+.category-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    
+    input {
+      padding: 0.6rem;
+      border: 1px solid $border;
+      border-radius: 0.375rem;
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+
+    button {
+      padding: 0.5rem 1rem;
+      border-radius: 0.375rem;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .btn-cancel {
+      background: white;
+      border: 1px solid $border;
+    }
+
+    .btn-submit {
+      background: $accent;
+      color: white;
+      border: none;
+      
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+    }
+  }
+}

@@ -1,0 +1,53 @@
+<div class="actions-bar">
+  <h3>All Categories</h3>
+  <button class="btn-primary" (click)="openCreate()">
+    <lucide-icon [img]="PlusIcon" size="18"></lucide-icon>
+    <span>Add Category</span>
+  </button>
+</div>
+
+<div class="table-container">
+  <table class="data-table" *ngIf="!isLoading()">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>ID</th>
+        <th class="actions-col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let cat of categories()">
+        <td>{{ cat.name }}</td>
+        <td class="id-col">#{{ cat.category_id }}</td>
+        <td class="actions-cell">
+          <button class="action-btn edit" (click)="openEdit(cat)">
+             <lucide-icon [img]="EditIcon" size="16"></lucide-icon>
+          </button>
+          <button class="action-btn delete" (click)="deleteCategory(cat.category_id)">
+             <lucide-icon [img]="TrashIcon" size="16"></lucide-icon>
+          </button>
+        </td>
+      </tr>
+      <tr *ngIf="categories().length === 0">
+        <td colspan="3" class="empty-state">No categories defined yet.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<app-modal 
+  *ngIf="isModalOpen()" 
+  [title]="editingCategory() ? 'Edit Category' : 'New Category'" 
+  (closed)="closeModal()"
+>
+  <form [formGroup]="form" (ngSubmit)="save()" class="category-form">
+    <div class="form-group">
+      <label>Category Name</label>
+      <input type="text" formControlName="name" placeholder="e.g., Starters">
+    </div>
+    <div class="form-actions">
+      <button type="button" class="btn-cancel" (click)="closeModal()">Cancel</button>
+      <button type="submit" class="btn-submit" [disabled]="form.invalid">Save</button>
+    </div>
+  </form>
+</app-modal>

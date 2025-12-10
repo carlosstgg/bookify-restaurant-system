@@ -1,0 +1,51 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="form-grid">
+    <div class="form-group">
+      <label for="full_name">Full Name</label>
+      <input id="full_name" type="text" formControlName="full_name" placeholder="John Doe">
+      <span class="error" *ngIf="form.get('full_name')?.invalid && form.get('full_name')?.touched">
+        Name is required (min 3 chars).
+      </span>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email Address</label>
+      <input id="email" type="email" formControlName="email" placeholder="john@bookify.com">
+      <span class="error" *ngIf="form.get('email')?.invalid && form.get('email')?.touched">
+        Valid email is required.
+      </span>
+    </div>
+
+    <div class="form-group">
+      <label for="role">Role</label>
+      <select id="role" formControlName="role">
+        <option *ngFor="let r of roles" [value]="r">{{ r | titlecase }}</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="phone">Phone (Optional)</label>
+      <input id="phone" type="text" formControlName="phone" placeholder="+1 234 567 890">
+    </div>
+
+    <div class="form-group full-width">
+      <label for="password">Password</label>
+      <input id="password" type="password" formControlName="password" placeholder="{{ employee ? 'Leave blank to keep current' : '••••••••' }}">
+      <span class="error" *ngIf="form.get('password')?.invalid && form.get('password')?.touched">
+        Password is required (min 6 chars).
+      </span>
+    </div>
+  </div>
+
+  <div class="error-banner" *ngIf="errorMessage()">
+    {{ errorMessage() }}
+  </div>
+
+  <div class="form-actions">
+    <button type="button" class="btn-cancel" (click)="cancelled.emit()">Cancel</button>
+    <button type="submit" class="btn-submit" [disabled]="form.invalid || isLoading()">
+      <span *ngIf="!isLoading()">{{ employee ? 'Update Employee' : 'Create Employee' }}</span>
+      <span *ngIf="isLoading()">Saving...</span>
+    </button>
+  </div>
+</form>
