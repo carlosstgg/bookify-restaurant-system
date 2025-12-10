@@ -2,13 +2,14 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Table } from '../models/table.models';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TableService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:3000/tables';
+  private apiUrl = `${environment.apiUrl}/tables`;
 
   getAll(): Observable<Table[]> {
     return this.http.get<Table[]>(this.apiUrl);

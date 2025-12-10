@@ -2,13 +2,14 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { InventoryItem } from '../models/inventory.models';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class InventoryService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:3000/inventory';
+  private apiUrl = `${environment.apiUrl}/inventory`;
 
   getAll(): Observable<InventoryItem[]> {
     return this.http.get<InventoryItem[]>(this.apiUrl);

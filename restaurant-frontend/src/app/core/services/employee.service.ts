@@ -2,14 +2,15 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../models/auth.models';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeeService {
   private http = inject(HttpClient);
-  // Direct route as identified previously
-  private apiUrl = 'http://localhost:3000/employees';
+  // Endpoint for employee management
+  private apiUrl = `${environment.apiUrl}/employees`;
 
   getAll(): Observable<User[]> {
     return this.http.get<User[]>(this.apiUrl);
