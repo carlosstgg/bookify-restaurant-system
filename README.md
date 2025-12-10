@@ -63,4 +63,4 @@ npm start
 *   **Waiter/Cashier:** Access to POS and Tables.
 
 ---
-Built with by Carlos Gallegos.
+Built by Carlos Gallegos.
