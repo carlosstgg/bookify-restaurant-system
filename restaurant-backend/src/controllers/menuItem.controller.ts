@@ -3,10 +3,13 @@ import { MenuItemService } from "../services/menuItem.service";
 
 export class MenuItemController {
   static async getAll(req: Request, res: Response) {
+    console.log("MenuItemController.getAll: Starting fetch...");
     try {
       const items = await MenuItemService.getAll();
+      console.log(`MenuItemController.getAll: Fetched ${items.length} items successfully.`);
       res.json(items);
     } catch (error) {
+      console.error("MenuItemController.getAll Error:", error);
       res.status(500).json({ error: "Failed to fetch menu items" });
     }
   }

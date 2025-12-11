@@ -4,7 +4,8 @@ import { Prisma } from "@prisma/client";
 export class TableService {
   static async getAll() {
     return prisma.table.findMany({
-      include: { orders: true },
+      // Removed orders include to prevent loading all history and causing timeouts
+      // include: { orders: true }, 
     });
   }
 
