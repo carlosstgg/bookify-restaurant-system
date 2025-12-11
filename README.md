@@ -2,7 +2,7 @@
 
 Bookify is a comprehensive, full-stack web application designed to digitize and streamline restaurant operations. It features a robust Monorepo architecture integrating a powerful Node.js backend with a sleek, responsive Angular frontend.
 
-Current Deployment: [Live Demo](https://bookify-restaurant-system.onrender.com) (Frontend managed elsewhere)
+Current Deployment: [Live Demo](https://bookify-restaurant-system.onrender.com) You can access with the credentials: admin@bookify.com and 123456
 
 ## 🚀 Key Features
 
