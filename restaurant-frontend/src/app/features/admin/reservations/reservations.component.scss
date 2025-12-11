@@ -277,3 +277,36 @@ table {
   padding: 3rem;
   color: $text-light;
 }
+
+.actions-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  padding: 0.35rem;
+  cursor: pointer;
+  color: $text-light;
+  border-radius: 0.25rem;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: #f3f4f6;
+    color: $primary;
+  }
+
+  &.delete:hover {
+    color: $danger;
+    background-color: #fee2e2;
+  }
+}
+
+.flex { display: flex; }
+.justify-end { justify-content: flex-end; }
+.gap-2 { gap: 0.5rem; }
+.mt-4 { margin-top: 1rem; }

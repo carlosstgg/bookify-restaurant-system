@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReservationService, Reservation } from '../../../core/services/reservation.service';
 import { TableService } from '../../../core/services/table.service';
-import { LucideAngularModule, Calendar, Clock, Users, Armchair } from 'lucide-angular';
+import { LucideAngularModule, Calendar, Clock, Users, Armchair, Edit, Trash2 } from 'lucide-angular'; // Updated icons
+import { ModalComponent } from '../../../shared/components/modal/modal.component';
 
 @Component({
   selector: 'app-reservations-admin',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, LucideAngularModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, LucideAngularModule, ModalComponent],
   templateUrl: './reservations.component.html',
   styleUrls: ['./reservations.component.scss']
 })
@@ -18,6 +19,8 @@ export class ReservationsAdminComponent implements OnInit {
   ClockIcon = Clock;
   UsersIcon = Users;
   ArmchairIcon = Armchair;
+  EditIcon = Edit;
+  TrashIcon = Trash2;
 
   private reservationService = inject(ReservationService);
   private fb = inject(FormBuilder);
@@ -30,15 +33,20 @@ export class ReservationsAdminComponent implements OnInit {
 
   reservationForm: FormGroup;
   checkAvailabilityForm: FormGroup;
+  editForm: FormGroup; // New form for editing
 
   selectedTable: any = null;
+  
+  // Modal State
+  isEditing = false;
+  editingReservation: Reservation | null = null;
 
   constructor() {
     this.reservationForm = this.fb.group({
       customer_name: ['', Validators.required],
       customer_phone: [''],
       people_count: [2, [Validators.required, Validators.min(1)]],
-      reservation_time: ['', Validators.required], // This matches the availability check time
+      reservation_time: ['', Validators.required], 
       duration: [120, Validators.required],
       table_id: [null, Validators.required]
     });
@@ -47,6 +55,14 @@ export class ReservationsAdminComponent implements OnInit {
       date: ['', Validators.required],
       time: ['', Validators.required],
       duration: [120, Validators.required]
+    });
+
+    // Simplified edit form (not changing time/table for now to avoid complexity)
+    this.editForm = this.fb.group({
+      customer_name: ['', Validators.required],
+      customer_phone: [''],
+      people_count: [1, [Validators.required, Validators.min(1)]],
+      status: ['confirmed', Validators.required]
     });
   }
 
@@ -82,7 +98,6 @@ export class ReservationsAdminComponent implements OnInit {
     if (this.checkAvailabilityForm.invalid) return;
 
     const { date, time, duration } = this.checkAvailabilityForm.value;
-    // Combine date and time
     const dateTimeStr = `${date}T${time}`;
     const dateTime = new Date(dateTimeStr);
 
@@ -92,7 +107,6 @@ export class ReservationsAdminComponent implements OnInit {
         this.availableTables = tables;
         this.isLoading = false;
         
-        // Update the reservation form time instantly
         this.reservationForm.patchValue({
           reservation_time: dateTimeStr,
           duration: duration
@@ -113,7 +127,6 @@ export class ReservationsAdminComponent implements OnInit {
   createReservation() {
     if (this.reservationForm.invalid) return;
 
-    // fix date format to ISO
     const formVal = this.reservationForm.value;
     const dateObj = new Date(formVal.reservation_time);
     
@@ -133,6 +146,44 @@ export class ReservationsAdminComponent implements OnInit {
         console.error(err);
         this.isLoading = false;
         alert('Error creating reservation');
+      }
+    });
+  }
+
+  // Edit Logic
+  openEdit(reservation: Reservation) {
+    this.editingReservation = reservation;
+    this.isEditing = true;
+    this.editForm.patchValue({
+      customer_name: reservation.customer_name,
+      customer_phone: reservation.customer_phone,
+      people_count: reservation.people_count,
+      status: reservation.status
+    });
+  }
+
+  closeEdit() {
+    this.isEditing = false;
+    this.editingReservation = null;
+    this.editForm.reset();
+  }
+
+  saveEdit() {
+    if (this.editForm.invalid || !this.editingReservation) return;
+
+    this.isLoading = true;
+    const updates = this.editForm.value;
+
+    this.reservationService.update(this.editingReservation.reservation_id!, updates).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.closeEdit();
+        this.loadReservations();
+      },
+      error: (err) => {
+        console.error(err);
+        this.isLoading = false;
+        alert('Error updating reservation');
       }
     });
   }
