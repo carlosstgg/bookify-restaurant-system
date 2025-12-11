@@ -1,0 +1,279 @@
+$primary: #111827;
+$accent: #2563eb;
+$danger: #ef4444;
+$success: #10b981;
+$warning: #f59e0b;
+$border: #e5e7eb;
+$text-light: #6b7280;
+$bg-light: #f9fafb;
+
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.page-header {
+  margin-bottom: 2rem;
+
+  h1 {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: $primary;
+    margin: 0;
+  }
+
+  p {
+    color: $text-light;
+    margin-top: 0.5rem;
+  }
+}
+
+.actions-bar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.btn-primary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: $accent;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s;
+  
+  &:hover {
+    background-color: darken($accent, 5%);
+  }
+
+  &.active {
+    background-color: darken($accent, 15%);
+    box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+  }
+}
+
+.btn-secondary {
+  @extend .btn-primary;
+  background-color: white;
+  color: $primary;
+  border: 1px solid $border;
+
+  &:hover {
+    background-color: $bg-light;
+  }
+
+  &.active {
+    background-color: $border;
+  }
+}
+
+// Table Styles (HTML Table)
+.table-container {
+  background: white;
+  border: 1px solid $border;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+
+  thead {
+    background-color: $bg-light;
+    border-bottom: 1px solid $border;
+    
+    th {
+      padding: 1rem;
+      font-weight: 600;
+      color: $text-light;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  }
+
+  tbody tr {
+    border-bottom: 1px solid $border;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: $bg-light;
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    td {
+      padding: 1rem;
+      color: $primary;
+      font-size: 0.95rem;
+
+      &.text-muted {
+        color: $text-light;
+        font-size: 0.85rem;
+      }
+    }
+  }
+}
+
+// Status Badges
+.scan-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+
+  &.confirmed { background-color: lighten($success, 45%); color: darken($success, 10%); }
+  &.cancelled { background-color: lighten($danger, 40%); color: darken($danger, 10%); }
+  &.completed { background-color: lighten($accent, 40%); color: darken($accent, 10%); }
+  &.no_show { background-color: lighten($warning, 40%); color: darken($warning, 10%); }
+}
+
+// Create Flow
+.create-grid {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.card {
+  background: white;
+  border: 1px solid $border;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+
+  h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: $primary;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid $border;
+  }
+}
+
+.floor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.table-card {
+  background: white;
+  border: 1px solid $border;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    border-color: $accent;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+
+  &.selected {
+    background-color: lighten($accent, 45%);
+    border-color: $accent;
+    box-shadow: 0 0 0 2px $accent;
+  }
+
+  .table-icon {
+    width: 48px;
+    height: 48px;
+    background-color: #eff6ff;
+    color: $accent;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+  }
+
+  h4 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: $primary;
+  }
+
+  span {
+    font-size: 0.75rem;
+    color: $text-light;
+  }
+}
+
+// Form Styles
+.form-group {
+  margin-bottom: 1rem;
+
+  label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.5rem;
+  }
+
+  input, select {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid $border;
+    border-radius: 0.375rem;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+      border-color: $accent;
+      box-shadow: 0 0 0 3px lighten($accent, 40%);
+    }
+  }
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: $success;
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1rem;
+
+  &:hover {
+    background-color: darken($success, 5%);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem;
+  color: $text-light;
+}

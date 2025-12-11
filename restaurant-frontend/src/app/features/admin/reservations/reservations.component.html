@@ -1,0 +1,179 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Reservations</h1>
+    <p>Manage bookings and table availability</p>
+  </div>
+
+  <div class="actions-bar">
+    <button 
+      (click)="switchMode('list')"
+      class="btn-secondary"
+      [class.active]="viewMode === 'list'">
+      <lucide-icon [img]="CalendarIcon" size="18"></lucide-icon>
+      List View
+    </button>
+    <button 
+      (click)="switchMode('create')"
+      class="btn-primary"
+      [class.active]="viewMode === 'create'">
+      <lucide-icon [img]="ClockIcon" size="18"></lucide-icon>
+      New Reservation
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="flex justify-center py-8">
+    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+  </div>
+
+  <!-- List View -->
+  <div *ngIf="viewMode === 'list' && !isLoading" class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Customer</th>
+          <th>Date & Time</th>
+          <th>Duration</th>
+          <th>People</th>
+          <th>Table</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let res of reservations">
+          <td class="text-muted">#{{res.reservation_id}}</td>
+          <td>
+            <div style="font-weight: 500;">{{res.customer_name}}</div>
+            <div class="text-muted" style="font-size: 0.8rem;">{{res.customer_phone}}</div>
+          </td>
+          <td>
+            {{ res.reservation_time | date:'MMM d, y, h:mm a' }}
+          </td>
+          <td>{{res.duration}} min</td>
+          <td>
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+              <lucide-icon [img]="UsersIcon" size="14" class="text-muted"></lucide-icon>
+              {{res.people_count}}
+            </div>
+          </td>
+          <td>
+            <span class="text-muted">Table #{{res.table?.table_number}}</span>
+          </td>
+          <td>
+            <span class="scan-badge" [ngClass]="res.status || 'confirmed'">
+              {{res.status}}
+            </span>
+          </td>
+          <td>
+            <button 
+              *ngIf="res.status === 'confirmed'"
+              (click)="cancelReservation(res.reservation_id!)"
+              class="icon-btn delete"
+              title="Cancel Reservation">
+               <!-- reusing styles from table list if available, else plain text or I should add icon -->
+               <span style="color: #ef4444; font-weight: 500; font-size: 0.85rem;">Cancel</span>
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="reservations.length === 0">
+          <td colspan="8" class="empty-state">
+            No reservations found. Click "New Reservation" to add one.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Create View -->
+  <div *ngIf="viewMode === 'create'" class="create-grid">
+    
+    <!-- Step 1: Check Availability -->
+    <div class="card">
+      <h2>1. Check Availability</h2>
+      <form [formGroup]="checkAvailabilityForm" (ngSubmit)="checkAvailability()">
+        <div class="form-group">
+          <label>Date</label>
+          <input type="date" formControlName="date">
+        </div>
+        <div class="form-group">
+          <label>Time</label>
+          <input type="time" formControlName="time">
+        </div>
+        <div class="form-group">
+          <label>Duration</label>
+          <select formControlName="duration">
+            <option [value]="60">1 Hour</option>
+            <option [value]="90">1.5 Hours</option>
+            <option [value]="120">2 Hours</option>
+            <option [value]="180">3 Hours</option>
+          </select>
+        </div>
+        <button 
+          type="submit" 
+          [disabled]="checkAvailabilityForm.invalid || isLoading"
+          class="submit-btn">
+          Find Tables
+        </button>
+      </form>
+
+      <div *ngIf="availableTables.length > 0">
+        <div style="margin-top: 2rem; margin-bottom: 1rem; color: #6b7280; font-size: 0.75rem; text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em;">
+          Select a Table
+        </div>
+        <div class="floor-grid">
+          <div 
+            *ngFor="let table of availableTables" 
+            (click)="selectTable(table)"
+            class="table-card"
+            [class.selected]="selectedTable?.table_id === table.table_id">
+            <div class="table-icon">
+              <!-- Using Armchair icon here matching the tables page -->
+              <lucide-icon [img]="ArmchairIcon" size="24"></lucide-icon>
+            </div>
+            <h4>#{{table.table_number}}</h4>
+            <span>Capacity: {{table.capacity}}</span>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="availableTables.length === 0 && checkAvailabilityForm.valid && !isLoading && checkAvailabilityForm.dirty" class="empty-state" style="padding: 2rem 0;">
+        <p>No tables available for this time.</p>
+      </div>
+    </div>
+
+    <!-- Step 2: Customer Details -->
+    <div class="card" [style.opacity]="selectedTable ? '1' : '0.5'" [style.pointer-events]="selectedTable ? 'auto' : 'none'">
+      <h2>2. Reservation Details</h2>
+      
+      <div *ngIf="selectedTable" style="margin-bottom: 1.5rem; padding: 1rem; background-color: #eff6ff; border-radius: 0.5rem; color: #1e40af; font-size: 0.9rem;">
+        Reserving Table <strong>#{{selectedTable.table_number}}</strong> for {{checkAvailabilityForm.value.date}} at {{checkAvailabilityForm.value.time}}
+      </div>
+
+      <form [formGroup]="reservationForm" (ngSubmit)="createReservation()">
+        <div class="form-group">
+          <label>Customer Name</label>
+          <input type="text" formControlName="customer_name" placeholder="e.g. John Doe">
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" formControlName="customer_phone" placeholder="e.g. 555-0123">
+        </div>
+        <div class="form-group">
+          <label>Number of People</label>
+          <input type="number" formControlName="people_count" min="1">
+        </div>
+
+        <button 
+          type="submit" 
+          [disabled]="reservationForm.invalid || isLoading"
+          class="submit-btn" 
+          style="background-color: #10b981;">
+          Confirm Reservation
+        </button>
+      </form>
+    </div>
+
+  </div>
+</div>

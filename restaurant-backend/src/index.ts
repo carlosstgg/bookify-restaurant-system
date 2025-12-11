@@ -9,6 +9,7 @@ import tableRoutes from "./routes/table.routes";
 import orderRoutes from "./routes/order.routes";
 import authRoutes from "./routes/auth.routes";
 import inventoryRoutes from "./routes/inventory.routes";
+import reservationRoutes from "./routes/reservation.routes";
 
 const app = express();
 
@@ -59,6 +60,7 @@ async function startServer() {
   app.use("/employees", employeeRoutes);
   app.use("/tables", tableRoutes);
   app.use("/orders", orderRoutes);
+  app.use("/reservations", reservationRoutes);
 
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

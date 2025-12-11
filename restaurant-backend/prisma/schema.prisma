@@ -39,6 +39,7 @@ model Table {
   table_number Int     @unique
   capacity     Int
   orders       Order[]
+  reservations Reservation[]
 
   @@index([capacity], map: "idx_capacity")
   @@map("Tables")
@@ -143,4 +144,26 @@ model Payment {
 
   @@index([payment_date], map: "idx_payment_date")
   @@map("Payments")
+}
+
+enum ReservationStatus {
+  confirmed
+  cancelled
+  completed
+  no_show
+}
+
+model Reservation {
+  reservation_id   Int               @id @default(autoincrement())
+  table_id         Int
+  customer_name    String            @db.VarChar(120)
+  customer_phone   String?           @db.VarChar(20)
+  reservation_time DateTime
+  duration         Int               @default(120) // Duration in minutes
+  people_count     Int
+  status           ReservationStatus @default(confirmed)
+  table            Table             @relation(fields: [table_id], references: [table_id])
+
+  @@index([reservation_time], map: "idx_reservation_time")
+  @@map("Reservations")
 }

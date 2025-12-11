@@ -11,7 +11,8 @@ import {
   ClipboardList, 
   Armchair,
   Settings,
-  LogOut
+  LogOut,
+  Calendar
 } from 'lucide-angular';
 
 interface MenuItem {
@@ -51,6 +52,12 @@ export class SidebarComponent {
       label: 'Tables', 
       icon: Armchair, 
       route: '/tables', 
+      roles: ['waiter', 'manager'] 
+    },
+    { 
+      label: 'Reservations', 
+      icon: Calendar, 
+      route: '/reservations', 
       roles: ['waiter', 'manager'] 
     },
     { 

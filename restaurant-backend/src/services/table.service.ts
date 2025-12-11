@@ -34,4 +34,49 @@ export class TableService {
       where: { table_id: id },
     });
   }
+
+  static async getAvailableTables(date: Date, durationMinutes: number) {
+    const reqStart = new Date(date);
+    const reqEnd = new Date(reqStart.getTime() + durationMinutes * 60000);
+
+    // Get all tables with their active reservations around the requested time
+    // To be efficient, we can check reservations for the whole day or a safe window.
+    // Let's grab reservations for the target day.
+    const startOfDay = new Date(reqStart);
+    startOfDay.setHours(0, 0, 0, 0);
+    const endOfDay = new Date(reqStart);
+    endOfDay.setHours(23, 59, 59, 999);
+
+    const tables = await prisma.table.findMany({
+      include: {
+        reservations: {
+          where: {
+            reservation_time: {
+              gte: startOfDay,
+              lte: endOfDay,
+            },
+            status: {
+              in: ['confirmed'] // Only confirmed reservations block tables. blocked? no_show/cancelled don't block.
+            }
+          }
+        }
+      }
+    });
+
+    // Filter tables that have NO overlapping reservation
+    const availableTables = tables.filter(table => {
+      const hasOverlap = table.reservations.some(reservation => {
+        const resStart = new Date(reservation.reservation_time);
+        const resEnd = new Date(resStart.getTime() + reservation.duration * 60000);
+
+        // Check for overlap
+        // Overlap if (StartA < EndB) and (EndA > StartB)
+        return resStart < reqEnd && resEnd > reqStart;
+      });
+
+      return !hasOverlap;
+    });
+
+    return availableTables;
+  }
 }

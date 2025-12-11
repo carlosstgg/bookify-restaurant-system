@@ -29,6 +29,10 @@ export const routes: Routes = [
           loadComponent: () => import('./features/orders/orders.component').then(m => m.OrdersComponent)
         },
         {
+          path: 'reservations',
+          loadComponent: () => import('./features/admin/reservations/reservations.component').then(m => m.ReservationsAdminComponent)
+        },
+        {
           path: 'kitchen',
           loadComponent: () => import('./features/kitchen/kitchen.component').then(m => m.KitchenComponent), // Kitchen KDS
           data: { roles: ['chef', 'manager'] }
