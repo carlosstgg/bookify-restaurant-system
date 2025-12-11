@@ -8,7 +8,7 @@
   </div>
 
   <div class="table-card">
-    <table class="data-table">
+    <table class="data-table mobile-cards">
       <thead>
         <tr>
           <th>Name</th>
@@ -20,13 +20,13 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of items()">
-          <td class="name-cell">
+          <td class="name-cell" data-label="Name">
             <div class="icon-circle">
                <lucide-icon [img]="PackageIcon" size="18"></lucide-icon>
             </div>
             {{ item.item_name }}
           </td>
-          <td class="stock-cell">
+          <td class="stock-cell" data-label="Stock Level">
             <div class="progress-bar-container">
                <div class="val">{{ item.quantity }}</div>
                <!-- Simple visual bar, max assumed 100 for visual relative scale or just logic -->
@@ -39,14 +39,14 @@
                </div>
             </div>
           </td>
-          <td>{{ item.unit }}</td>
-          <td>
+          <td data-label="Unit">{{ item.unit }}</td>
+          <td data-label="Status">
             <span class="status-badge" [class.warning]="isLowStock(item)" [class.ok]="!isLowStock(item)">
               <lucide-icon *ngIf="isLowStock(item)" [img]="AlertIcon" size="14"></lucide-icon>
               {{ isLowStock(item) ? 'Low Stock' : 'In Stock' }}
             </span>
           </td>
-          <td class="actions-cell">
+          <td class="actions-cell" data-label="Actions">
             <button class="btn-icon" (click)="openEdit(item)">
               <lucide-icon [img]="EditIcon" size="18"></lucide-icon>
             </button>
