@@ -163,6 +163,8 @@ $text-light: #6b7280;
 .actions-cell {
   display: flex;
   gap: 0.5rem;
+  min-height: 52px;
+  align-items: center;
 }
 
 .action-btn {
