@@ -25,7 +25,7 @@
 
     <!-- Table -->
     <div *ngIf="!isLoading() && !errorMessage()" class="table-responsive">
-      <table class="data-table">
+      <table class="data-table mobile-cards">
         <thead>
           <tr>
             <th>Name</th>
@@ -37,7 +37,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let employee of employees()">
-            <td>
+            <td data-label="Name">
               <div class="employee-cell">
                 <div class="avatar">{{ employee.full_name.charAt(0) }}</div>
                 <div class="info">
@@ -46,14 +46,14 @@
                 </div>
               </div>
             </td>
-            <td>
+            <td data-label="Role">
               <span class="badge" [ngClass]="employee.role">
                 {{ employee.role }}
               </span>
             </td>
-            <td>{{ employee.email }}</td>
-            <td>{{ employee.phone || '-' }}</td>
-            <td class="actions-cell">
+            <td data-label="Email">{{ employee.email }}</td>
+            <td data-label="Phone">{{ employee.phone || '-' }}</td>
+            <td class="actions-cell" data-label="Actions">
               <button class="action-btn edit" title="Edit" (click)="openEditModal(employee)">
                 <lucide-icon [img]="EditIcon" size="16"></lucide-icon>
               </button>

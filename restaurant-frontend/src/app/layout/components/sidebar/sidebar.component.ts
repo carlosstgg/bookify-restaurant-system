@@ -21,6 +21,8 @@ interface MenuItem {
   roles: UserRole[];
 }
 
+import { LayoutService } from '../../../core/services/layout.service';
+
 @Component({
   selector: 'app-sidebar',
   standalone: true,
@@ -30,6 +32,7 @@ interface MenuItem {
 })
 export class SidebarComponent {
   authService = inject(AuthService);
+  layoutService = inject(LayoutService);
   
   readonly menuItems: MenuItem[] = [
     { 

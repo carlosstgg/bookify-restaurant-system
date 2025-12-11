@@ -7,18 +7,62 @@ $hover-bg: #1f2937;
 
 :host {
   display: block;
-  height: 100vh;
-  flex-shrink: 0;
+}
+
+// Overlay for mobile
+.overlay {
+  display: none; // Hidden by default on desktop
+  position: fixed;
+  inset: 0; // Top/Right/Bottom/Left: 0
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 29; // Below sidebar (30), above header (20)
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+
+  &.visible {
+    pointer-events: auto;
+    opacity: 1;
+    display: block;
+  }
 }
 
 .sidebar {
   width: $sidebar-width;
-  height: 100%;
+  height: 100vh;
   background-color: $primary-color;
   color: $text-color;
   display: flex;
   flex-direction: column;
   border-right: 1px solid #374151;
+  transition: transform 0.3s ease;
+
+  // Mobile Styles (Below lg breakpoint)
+  @media (max-width: 1023px) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 30; // Topmost
+    transform: translateX(-100%); // Hidden by default
+    box-shadow: 4px 0 24px rgba(0,0,0,0.5);
+
+    &.open {
+      transform: translateX(0);
+    }
+    
+    // Show overlay only on mobile when needed
+    + .overlay {
+        display: block;
+    }
+  }
+
+  // Desktop Styles (Reset transform)
+  @media (min-width: 1024px) {
+    position: static;
+    transform: none !important;
+    height: 100%;
+  }
 }
 
 .logo-container {

@@ -1,4 +1,11 @@
-<aside class="sidebar">
+<!-- Mobile Overlay -->
+<div 
+  class="overlay" 
+  [class.visible]="layoutService.isSidebarOpen()" 
+  (click)="layoutService.closeSidebar()"
+></div>
+
+<aside class="sidebar" [class.open]="layoutService.isSidebarOpen()">
   <div class="logo-container">
     <div class="logo-icon">B</div>
     <span class="logo-text">Bookify</span>
@@ -12,6 +19,7 @@
         routerLinkActive="active"
         [routerLinkActiveOptions]="{exact: item.route === '/'}"
         class="nav-item"
+        (click)="layoutService.closeSidebar()"
       >
         <lucide-icon [img]="item.icon" class="nav-icon"></lucide-icon>
         <span class="nav-label">{{ item.label }}</span>
