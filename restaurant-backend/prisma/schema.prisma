@@ -48,7 +48,7 @@ model Table {
 enum Role {
   waiter
   chef
-  cashier
+  general_assistant
   manager
 }
 

@@ -11,31 +11,40 @@ export const routes: Routes = [
     component: MainLayoutComponent,
     canActivate: [authGuard],
     children: [
-        { path: '', component: DashboardComponent },
+        { 
+          path: '', 
+          component: DashboardComponent,
+          data: { roles: ['manager'] }
+        },
         { 
           path: 'employees', 
-          loadComponent: () => import('./features/admin/employees/employees.component').then(m => m.EmployeesComponent) 
+          loadComponent: () => import('./features/admin/employees/employees.component').then(m => m.EmployeesComponent),
+          data: { roles: ['manager'] } 
         },
         {
           path: 'menu',
-          loadComponent: () => import('./features/admin/menu').then(m => m.MenuComponent)
+          loadComponent: () => import('./features/admin/menu').then(m => m.MenuComponent),
+          data: { roles: ['manager', 'general_assistant', 'chef'] }
         },
         {
           path: 'tables',
-          loadComponent: () => import('./features/admin/tables/tables.component').then(m => m.TablesComponent)
+          loadComponent: () => import('./features/admin/tables/tables.component').then(m => m.TablesComponent),
+          data: { roles: ['manager', 'waiter', 'general_assistant'] }
         },
         {
           path: 'orders',
-          loadComponent: () => import('./features/orders/orders.component').then(m => m.OrdersComponent)
+          loadComponent: () => import('./features/orders/orders.component').then(m => m.OrdersComponent),
+          data: { roles: ['manager', 'waiter', 'general_assistant', 'chef'] }
         },
         {
           path: 'reservations',
-          loadComponent: () => import('./features/admin/reservations/reservations.component').then(m => m.ReservationsAdminComponent)
+          loadComponent: () => import('./features/admin/reservations/reservations.component').then(m => m.ReservationsAdminComponent),
+          data: { roles: ['manager', 'waiter', 'general_assistant'] }
         },
         {
           path: 'kitchen',
-          loadComponent: () => import('./features/kitchen/kitchen.component').then(m => m.KitchenComponent), // Kitchen KDS
-          data: { roles: ['chef', 'manager'] }
+          loadComponent: () => import('./features/kitchen/kitchen.component').then(m => m.KitchenComponent),
+          data: { roles: ['manager', 'chef'] }
         },
     ] 
   },

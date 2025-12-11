@@ -40,31 +40,31 @@ export class SidebarComponent {
       label: 'Dashboard', 
       icon: LayoutDashboard, 
       route: '/', 
-      roles: ['manager', 'cashier', 'chef', 'waiter'] 
+      roles: ['manager'] 
     },
     { 
       label: 'Orders', 
       icon: ClipboardList, 
       route: '/orders', 
-      roles: ['waiter', 'cashier', 'manager', 'chef'] 
+      roles: ['waiter', 'general_assistant', 'manager', 'chef'] 
     },
     { 
       label: 'Tables', 
       icon: Armchair, 
       route: '/tables', 
-      roles: ['waiter', 'manager'] 
+      roles: ['waiter', 'general_assistant', 'manager'] 
     },
     { 
       label: 'Reservations', 
       icon: Calendar, 
       route: '/reservations', 
-      roles: ['waiter', 'manager'] 
+      roles: ['waiter', 'general_assistant', 'manager'] 
     },
     { 
       label: 'Menu & Inventory', 
       icon: UtensilsCrossed, 
       route: '/menu', 
-      roles: ['manager', 'chef'] 
+      roles: ['manager', 'general_assistant', 'chef'] 
     },
     { 
       label: 'Kitchen', 

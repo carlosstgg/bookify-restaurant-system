@@ -30,7 +30,7 @@ export class EmployeeFormComponent implements OnInit {
   isLoading = signal(false);
   errorMessage = signal<string | null>(null);
 
-  roles: UserRole[] = ['waiter', 'chef', 'cashier', 'manager'];
+  roles: UserRole[] = ['waiter', 'chef', 'general_assistant', 'manager'];
 
   ngOnInit(): void {
     if (this.employee) {

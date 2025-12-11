@@ -48,18 +48,20 @@
             </td>
             <td data-label="Role">
               <span class="badge" [ngClass]="employee.role">
-                {{ employee.role }}
+                {{ employee.role.replace('_', ' ') | titlecase }}
               </span>
             </td>
             <td data-label="Email">{{ employee.email }}</td>
             <td data-label="Phone">{{ employee.phone || '-' }}</td>
             <td class="actions-cell" data-label="Actions">
-              <button class="action-btn edit" title="Edit" (click)="openEditModal(employee)">
-                <lucide-icon [img]="EditIcon" size="16"></lucide-icon>
-              </button>
-              <button class="action-btn delete" (click)="deleteEmployee(employee.employee_id)" title="Delete">
-                 <lucide-icon [img]="TrashIcon" size="16"></lucide-icon>
-              </button>
+              <ng-container *ngIf="employee.email !== 'admin@bookify.com'">
+                <button class="action-btn edit" title="Edit" (click)="openEditModal(employee)">
+                  <lucide-icon [img]="EditIcon" size="16"></lucide-icon>
+                </button>
+                <button class="action-btn delete" (click)="deleteEmployee(employee.employee_id)" title="Delete">
+                   <lucide-icon [img]="TrashIcon" size="16"></lucide-icon>
+                </button>
+              </ng-container>
             </td>
           </tr>
           

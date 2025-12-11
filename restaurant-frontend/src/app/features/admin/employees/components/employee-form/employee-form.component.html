@@ -19,7 +19,7 @@
     <div class="form-group">
       <label for="role">Role</label>
       <select id="role" formControlName="role">
-        <option *ngFor="let r of roles" [value]="r">{{ r | titlecase }}</option>
+        <option *ngFor="let r of roles" [value]="r">{{ r.replace('_', ' ') | titlecase }}</option>
       </select>
     </div>
 
