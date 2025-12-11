@@ -11,13 +11,14 @@ import { LucideAngularModule, Plus } from 'lucide-angular';
   imports: [CommonModule, OrderListComponent, OrderFormComponent, ModalComponent, LucideAngularModule],
   template: `
     <div class="page-container">
-      <div class="header-row">
-        <div class="page-header">
-          <h1>Active Orders</h1>
-          <p>Real-time kitchen display system (KDS)</p>
-        </div>
+      <div class="page-header">
+        <h1>Active Orders</h1>
+        <p>Real-time kitchen display system (KDS)</p>
+      </div>
+
+      <div class="actions-bar">
         <button class="btn-primary" (click)="isModalOpen.set(true)">
-          <lucide-icon [img]="PlusIcon" size="20"></lucide-icon>
+          <lucide-icon [img]="PlusIcon" size="18"></lucide-icon>
           <span>New Order</span>
         </button>
       </div>
@@ -42,18 +43,19 @@ import { LucideAngularModule, Plus } from 'lucide-angular';
     .page-container {
       max-width: 1200px;
       margin: 0 auto;
-    }
-
-    .header-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 2rem;
+      padding: 2rem; 
     }
 
     .page-header {
-      h1 { font-size: 1.875rem; font-weight: 700; color: #111827; margin: 0; margin-top: 2rem; }
+      margin-bottom: 2rem;
+      h1 { font-size: 1.875rem; font-weight: 700; color: #111827; margin: 0; }
       p { color: #6b7280; margin-top: 0.5rem; }
+    }
+
+    .actions-bar {
+      display: flex;
+      justify-content: flex-end; /* Aligns to right like Reservations/Tables */
+      margin-bottom: 2rem;
     }
 
     .btn-primary {
@@ -63,11 +65,12 @@ import { LucideAngularModule, Plus } from 'lucide-angular';
       background-color: #2563eb;
       color: white;
       border: none;
-      padding: 0.75rem 1.25rem;
-      border-radius: 0.5rem;
-      font-weight: 600;
+      padding: 0.5rem 1rem; /* Reduced padding */
+      border-radius: 0.375rem; /* Standard radius */
+      font-weight: 500; /* Reduced weight */
       cursor: pointer;
-      font-size: 1rem;
+      font-size: 0.95rem; /* Slightly smaller */
+      transition: background-color 0.2s;
       
       &:hover { background-color: #1d4ed8; }
     }
