@@ -40,8 +40,8 @@ const corsOptions = {
 
 // Apply CORS globally
 app.use(cors(corsOptions));
-// Handle OPTIONS preflight requests explicitly
-app.options("*", cors(corsOptions));
+// Handle OPTIONS preflight requests explicitly using RegExp for Express 5 compatibility
+app.options(/.*/, cors(corsOptions));
 
 app.use(express.json());
 
