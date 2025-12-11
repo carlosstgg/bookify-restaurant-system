@@ -1,50 +1,72 @@
 # Bookify - Restaurant Management System 🍽️
 
-Bookify is a modern, full-stack web application designed to streamline restaurant operations. It features a robust Monorepo architecture integrating a powerful Node.js backend with a sleek Angular frontend.
+Bookify is a comprehensive, full-stack web application designed to digitize and streamline restaurant operations. It features a robust Monorepo architecture integrating a powerful Node.js backend with a sleek, responsive Angular frontend.
+
+Current Deployment: [Live Demo](https://bookify-restaurant-system.onrender.com) (Frontend managed elsewhere)
 
 ## 🚀 Key Features
 
-### FRONTEND (Angular 18+)
+### 🌟 Core Modules
+*   **Reservations System:** 
+    *   **Smart Availability:** Real-time checking of table availability based on date, time, and party size.
+    *   **Management:** complete CRUD with an intuitive modal interface for editing and cancelling bookings.
+    *   **Visual Status:** Clear indicators for confirmed, completed, and cancelled reservations.
+*   **Table Management:** 
+    *   Visual representation of restaurant floor.
+    *   Status tracking (Available, Occupied, Reserved).
 *   **Kitchen Display System (KDS):** Real-time order visualization for kitchen staff with high-contrast UI and "Late Order" alerts.
-*   **Point of Sale (POS):** Efficient order taking interface with menu categorization and cart management.
-*   **Inventory Management:** Track ingredient stock levels, unit costs, and low-stock alerts.
-*   **Recipe Integration:** Automatic deduction of ingredients from inventory when menu items are sold.
-*   **Role-Based Access Control (RBAC):** Distinct views and permissions for Managers, Chefs, Cashiers, and Waiters.
-*   **Dashboard:** Real-time analytics on revenue, active orders, and inventory health.
+*   **Point of Sale (POS):** Efficient order taking interface for waiters.
 
-### BACKEND (Node.js & Express)
-*   **RESTful API:** Structured and scalable API endpoints.
-*   **Prisma ORM:** Type-safe database interactions with MySQL.
-*   **Authentication:** Secure JWT-based authentication system.
-*   **Database:** Relational schema supporting complex relationships (Orders -> Items -> Recipes -> Inventory).
+### 💻 Frontend (Angular 18+)
+*   **Modern UI/UX:** Built with a custom design system using SCSS, featuring glassmorphism effects, smooth transitions, and a consistent color palette.
+*   **Refined Components:**
+    *   **Modals:** Reusable, animated modal system for forms and confirmations.
+    *   **Icons:** Integrated Lucide Icons for a clean, professional look.
+    *   **Interactive Header:** Profile dropdown and quick actions.
+*   **Role-Based Access Control (RBAC):** Distinct views/permissions for Managers, Waiters, and Chefs.
+
+### 🔙 Backend (Node.js & Express)
+*   **Architecture:** RESTful API with distinct layers (Controllers, Services, Routes).
+*   **Database:** MySQL relational database managed via Prisma ORM.
+*   **Security:** JWT-based authentication and secure password hashing.
+*   **Scalability:** Modular structure allowing easy addition of new features.
 
 ## 🛠️ Tech Stack
 
 *   **Frontend:** Angular (Standalone Components, Signals), SCSS, Lucide Icons.
 *   **Backend:** Node.js, Express, TypeScript.
-*   **Database:** MySQL, Prisma ORM.
-*   **Tools:** Git (Monorepo), npm.
+*   **data Access:** Prisma ORM, MySQL.
+*   **DevOps:** Monorepo structure, deployed on Render.
 
 ## 📦 Project Structure
 
 ```bash
 Bookify/
-├── restaurant-backend/  # Node.js API
-├── restaurant-frontend/ # Angular App
-└── README.md            # You are here
+├── restaurant-backend/  # Node.js Express API
+│   ├── src/
+│   │   ├── controllers/ # Request handlers
+│   │   ├── services/    # Business logic
+│   │   └── routes/      # Endpoint definitions
+│   └── prisma/          # Database schema
+│
+└── restaurant-frontend/ # Angular Application
+    ├── src/app/
+    │   ├── core/        # Singleton services (Auth, API)
+    │   ├── features/    # Feature modules (Auth, Admin, Orders)
+    │   └── shared/      # Reusable components (Modal, etc.)
 ```
 
 ## ⚡ Getting Started
 
 ### Prerequisites
 *   Node.js (v18+)
-*   MySQL Database
+*   MySQL Database (Local or Remote)
 
 ### 1. Setup Backend
 ```bash
 cd restaurant-backend
 npm install
-# Configure .env with your DATABASE_URL
+# Configure .env with your DATABASE_URL and JWT_SECRET
 npx prisma migrate dev
 npm run dev
 ```
@@ -53,14 +75,21 @@ npm run dev
 ```bash
 cd restaurant-frontend
 npm install
-npm start
+# Configure environment.ts
+ng serve
 ```
 
 ## 👥 Roles & Credentials (Demo)
 
-*   **Manager:** Admin access to all modules.
-*   **Chef:** Access to KDS and Inventory.
-*   **Waiter/Cashier:** Access to POS and Tables.
+*   **Manager:** Admin access to all modules (Tables, Reservations, Employees).
+*   **Waiter:** Access to Order creation and Table views.
+*   **Kitchen:** Access to Active Orders view.
 
 ---
-Built by Carlos Gallegos.
+<div align="center">
+  Made with ❤️ by <strong>Carlos Gallegos</strong>
+  <br>
+  <a href="https://github.com/carlosstgg">
+    <img src="https://img.shields.io/badge/GitHub-Profile-black?style=flat-square&logo=github" alt="GitHub">
+  </a>
+</div>
