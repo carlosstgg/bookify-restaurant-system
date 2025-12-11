@@ -29,6 +29,7 @@ import { TableListComponent } from './components/table-list/table-list.component
         font-weight: 700;
         color: #111827;
         margin: 0;
+        margin-top: 2rem;
       }
 
       p {

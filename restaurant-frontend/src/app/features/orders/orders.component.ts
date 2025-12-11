@@ -52,7 +52,7 @@ import { LucideAngularModule, Plus } from 'lucide-angular';
     }
 
     .page-header {
-      h1 { font-size: 1.875rem; font-weight: 700; color: #111827; margin: 0; }
+      h1 { font-size: 1.875rem; font-weight: 700; color: #111827; margin: 0; margin-top: 2rem; }
       p { color: #6b7280; margin-top: 0.5rem; }
     }
 
